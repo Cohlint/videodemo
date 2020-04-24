@@ -87,12 +87,11 @@
       };
       function getVideoInfo() {
         player.pauseVideo();
-        var info = 'Percent: ' + player.getVideoLoadedFraction() + '%\n' +
-        'State: ' + stateMap[player.getPlayerState()] + '\n' +
-        'getCurrentTime: ' + player.getCurrentTime() + '\n' +
-        'getDuration: ' + player.getDuration() + '\n' +
-        'getVideoUrl: ' + player.getVideoUrl() + '\n' +
-        'getVideoEmbedCode: ' + player.getVideoEmbedCode();
+        var info = 'Percent: ' + Number(player.getVideoLoadedFraction()).toFixed(2) + '%<br/>' +
+        'State: ' + stateMap[player.getPlayerState()] + '<br/>' +
+        'getCurrentTime: ' + Number(player.getCurrentTime()).toFixed(2) + '<br/>' +
+        'getDuration: ' + Number(player.getDuration()).toFixed(2) + '<br/>' +
+        'getVideoUrl: ' + player.getVideoUrl() ;
         document.getElementById("getInfo").innerHTML = info;
       }
     </script>
