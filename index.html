@@ -1,99 +1,104 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <style>
-      #player {
-        height: 360px;
-        width: 640px
-      }
-      button {
-        margin-right: 20px;
-        height: 20px;
-      }
-    </style>
-  </head>
-  <body>
 
-    <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
-    <div id="player"></div>
-    <div>
-        <button type="button" id="start" onclick="startVideo()">Start</button>
-        <button type="button" id="pause" onclick="pauseVideo()">Pause</button>
-        <button type="button" id="getInfo" onclick="getVideoInfo()">Get Video Info</button>
-        <br/>
-        <p id="info-section"></p>
-    </div>
-    <script>
-      // 2. This code loads the IFrame Player API code asynchronously.
-      var tag = document.createElement('script');
+<head>
+  <style>
+    #player {
+      height: 360px;
+      width: 640px
+    }
 
-      tag.src = "https://www.youtube.com/iframe_api";
-      var firstScriptTag = document.getElementsByTagName('script')[0];
-      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    button {
+      margin-right: 20px;
+      height: 20px;
+    }
+  </style>
+</head>
 
-      // 3. This function creates an <iframe> (and YouTube player)
-      //    after the API code downloads.
-      var player;
-      function onYouTubeIframeAPIReady() {
-        player = new YT.Player('player', {
-          height: '360',
-          width: '640',
-          videoId: 'KCPb6dIBQAA', //wp7t-V2xZ7U M7lc1UVf-VE
-          events: {
-            'onReady': onPlayerReady,
-            'onStateChange': onPlayerStateChange
-          },
-          playerVars: {
-            controls: 0 // do not show play controls
-          }
-        });
-      }
+<body>
 
-      // 4. The API will call this function when the video player is ready.
-      function onPlayerReady(event) {
-        event.target.playVideo();
-      }
+  <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
+  <div id="player"></div>
+  <div>
+    <button type="button" id="start" onclick="startVideo()">Start</button>
+    <button type="button" id="pause" onclick="pauseVideo()">Pause</button>
+    <button type="button" id="getInfo" onclick="getVideoInfo()">Get Video Info</button>
+    <br />
+    <p id="info-section"></p>
+  </div>
+  <script>
+    // 2. This code loads the IFrame Player API code asynchronously.
+    var tag = document.createElement('script');
 
-      // 5. The API calls this function when the player's state changes.
-      //    The function indicates that when playing a video (state=1),
-      //    the player should play for six seconds and then stop.
-      var done = false;
-      function onPlayerStateChange(event) {
-        console.log(event);
-        if (event.data == YT.PlayerState.PLAYING && !done) {
-          // setTimeout(stopVideo, 6000);
-          done = true;
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    // 3. This function creates an <iframe> (and YouTube player)
+    //    after the API code downloads.
+    var player;
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('player', {
+        height: '360',
+        width: '640',
+        videoId: 'KCPb6dIBQAA', //wp7t-V2xZ7U M7lc1UVf-VE
+        events: {
+          'onReady': onPlayerReady,
+          'onStateChange': onPlayerStateChange
+        },
+        playerVars: {
+          controls: 0 // do not show play controls
         }
-      }
-      function stopVideo() {
-        player.stopVideo();
-      }
+      });
+    }
 
-      function startVideo() {
-        player.playVideo();
-      }
+    // 4. The API will call this function when the video player is ready.
+    function onPlayerReady(event) {
+      event.target.playVideo();
+    }
 
-      function pauseVideo() {
-        player.pauseVideo();
+    // 5. The API calls this function when the player's state changes.
+    //    The function indicates that when playing a video (state=1),
+    //    the player should play for six seconds and then stop.
+    var done = false;
+    function onPlayerStateChange(event) {
+      console.log(event);
+      if (event.data == YT.PlayerState.PLAYING && !done) {
+        // setTimeout(stopVideo, 6000);
+        done = true;
       }
+    }
+    function stopVideo() {
+      player.stopVideo();
+    }
 
-      let stateMap = {
-          [-1]: "not start",
-          [0]: "finished",
-          [1]: "playing",
-          [2]: "pause",
-          [3]: "buffering",
-          [5]: "appended"
-      };
-      function getVideoInfo() {
-        player.pauseVideo();
-        var info = 'Percent: ' + Number(player.getVideoLoadedFraction()).toFixed(2) + '%<br/>' +
+    function startVideo() {
+      player.playVideo();
+    }
+
+    function pauseVideo() {
+      player.pauseVideo();
+    }
+
+    let stateMap = {
+      [-1]: "not start",
+      [0]: "finished",
+      [1]: "playing",
+      [2]: "pause",
+      [3]: "buffering",
+      [5]: "appended"
+    };
+    function getVideoInfo() {
+      player.pauseVideo();
+      var info = 'VideoLoadedPercent: ' + Number(player.getVideoLoadedFraction()).toFixed(2) * 100 + '%<br/>' +
         'State: ' + stateMap[player.getPlayerState()] + '<br/>' +
-        'getCurrentTime: ' + Number(player.getCurrentTime()).toFixed(2) + 's<br/>' +
-        'getDuration: ' + Number(player.getDuration()).toFixed(2) + 's<br/>' +
-        'getVideoUrl: ' + player.getVideoUrl() ;
-        document.getElementById("info-section").innerHTML = info;
-      }
-    </script>
-  </body>
+        'Current Time: ' + Number(player.getCurrentTime()).toFixed(2) + 's<br/>' +
+        'Total Duration: ' + Number(player.getDuration()).toFixed(2) + 's<br/>' +
+        'Progress Percent: ' + Number(player.getCurrentTime() / player.getDuration()).toFixed(2) * 100 + '%<br/>' +
+        'Video Url: ' + player.getVideoUrl();
+      document.getElementById("info-section").innerHTML = info;
+    }
+  </script>
+</body>
+
 </html>
