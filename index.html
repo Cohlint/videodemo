@@ -89,10 +89,10 @@
         player.pauseVideo();
         var info = 'Percent: ' + Number(player.getVideoLoadedFraction()).toFixed(2) + '%<br/>' +
         'State: ' + stateMap[player.getPlayerState()] + '<br/>' +
-        'getCurrentTime: ' + Number(player.getCurrentTime()).toFixed(2) + '<br/>' +
-        'getDuration: ' + Number(player.getDuration()).toFixed(2) + '<br/>' +
+        'getCurrentTime: ' + Number(player.getCurrentTime()).toFixed(2) + 's<br/>' +
+        'getDuration: ' + Number(player.getDuration()).toFixed(2) + 's<br/>' +
         'getVideoUrl: ' + player.getVideoUrl() ;
-        document.getElementById("getInfo").innerHTML = info;
+        document.getElementById("info-section").innerHTML = info;
       }
     </script>
   </body>
